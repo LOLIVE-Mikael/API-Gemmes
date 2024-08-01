@@ -8,11 +8,15 @@ const path = require('path');
 const app = express()
 const port = 3000
 
+const swaggerDocs = require('./swagger');
+
 app
   .use(favicon(path.join(__dirname, 'favicon.ico')))    .use(morgan('dev'))
     .use(bodyParser.json())
 
 sequelize.initDb()
+
+swaggerDocs(app);
 
 require('./src/routes/findAllGems')(app)
 require('./src/routes/findGemByPk')(app)

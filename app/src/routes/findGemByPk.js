@@ -1,5 +1,68 @@
 const { Gem } = require('../db/sequelize')
-  
+
+/**
+ * @swagger
+ * /api/gemmes/{id}:
+ *   get:
+ *     summary: Récupérer une gemme par son ID
+ *     tags: [Gemmes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la gemme à récupérer
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     responses:
+ *       200:
+ *         description: Une gemme a été trouvée
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Une gemme a bien été trouvée.
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     name:
+ *                       type: string
+ *                       example: Ruby
+ *                     color:
+ *                       type: string
+ *                       example: Red
+ *       404:
+ *         description: Gemme non trouvée
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: La gemme demandée n'existe pas. Réessayez avec un autre identifiant.
+ *       500:
+ *         description: Erreur interne du serveur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Les gemmes n'ont pas pu être récupérées. Réessayez dans quelques instants.
+ *                 data:
+ *                   type: object
+ *                   additionalProperties: true
+ */
+
+
 module.exports = (app) => {
   app.get('/api/gemmes/:id', (req, res) => {
     Gem.findByPk(req.params.id)

@@ -1,6 +1,98 @@
 const { Op } = require('sequelize');
 const { Gem } = require('../db/sequelize');
 
+/**
+ * @swagger
+ * /api/gemmes:
+ *   get:
+ *     summary: Récupérer une liste de gemmes avec options de filtrage
+ *     tags: [Gemmes]
+ *     parameters:
+ *       - in: query
+ *         name: color
+ *         description: Couleur des gemmes à filtrer
+ *         schema:
+ *           type: string
+ *           example: Rouge
+ *       - in: query
+ *         name: rarity
+ *         description: Rareté des gemmes à filtrer
+ *         schema:
+ *           type: string
+ *           enum:
+ *              - Commun
+ *              - Peu commun
+ *              - Rare
+ *              - Très rare
+ *           example: Rare
+ *       - in: query
+ *         name: limit
+ *         description: Nombre maximum de gemmes à retourner
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *     responses:
+ *       200:
+ *         description: Liste des gemmes récupérées avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: La liste des gemmes a bien été récupérée.
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       name:
+ *                         type: string
+ *                         example: Rubis
+ *                       color:
+ *                         type: string
+ *                         example: Rouge
+ *                       rarity:
+ *                         type: string
+ *                         enum:
+ *                            - Rare
+ *                            - Commun
+ *                            - Peu commun
+ *                            - Très rare
+ *                         example: Rare
+ *                 count:
+ *                   type: integer
+ *                   example: 3
+ *       400:
+ *         description: Erreur de validation des paramètres de requête
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Le terme de recherche de couleur doit contenir au minimum 2 caractères.
+ *       500:
+ *         description: Erreur interne du serveur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: La liste des gemmes n'a pas pu être récupérée. Réessayez dans quelques instants.
+ *                 data:
+ *                   type: object
+ *                   additionalProperties: true
+ */
+
+
 module.exports = (app) => {
   app.get('/api/gemmes', async (req, res) => {
     try {
