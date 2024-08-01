@@ -8,7 +8,7 @@ const path = require('path');
 const app = express()
 const port = 3000
 
-const swaggerDocs = require('./swagger');
+const swaggerDocs = require('./src/swagger');
 
 app
   .use(favicon(path.join(__dirname, 'favicon.ico')))    .use(morgan('dev'))

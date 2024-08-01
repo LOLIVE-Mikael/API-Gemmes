@@ -26,7 +26,7 @@ const initDb = async () => {
           color: gem.color,
           rarity: gem.rarity
         });
-      console.log(createdGem.toJSON());
+    //  console.log(createdGem.toJSON());
     }catch (error) {
       console.error(`Erreur lors de l'insertion de la gemme ${gem.name}:`, error);
     }
