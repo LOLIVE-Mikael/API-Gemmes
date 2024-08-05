@@ -11,10 +11,10 @@ const port: number = 3000;
 const app = express()
 
 //ajout du favicon
-/*
+
 app.use(favicon(path.join(__dirname, '../favicon.ico')))
 app.use(morgan('dev'))
-app.use(bodyParser.json()) */
+app.use(bodyParser.json()) 
 
 //initailisation de la base de donnée
 initDb()

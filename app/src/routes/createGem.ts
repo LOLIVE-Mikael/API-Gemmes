@@ -96,6 +96,7 @@ import { UniqueConstraintError, ValidationError } from 'sequelize';
 
 const createGem = (app: Express) => {
   app.post('/api/gemmes', async (req: Request, res: Response) => {
+    console.log('Corps de la requête:', req.body); // Vérifiez ce log
     try {
       const gem = await Gem.create(req.body);
       const message = `La gemme ${gem.name} a bien été créée.`;
