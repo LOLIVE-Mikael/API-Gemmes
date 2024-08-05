@@ -1,5 +1,6 @@
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
+import swaggerJsdoc, { Options } from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import { Application } from 'express';
 
 const options = {
   definition: {
@@ -11,19 +12,19 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3001',
+        url: 'http://localhost:3000',
         description: 'Serveur local',
       },
     ],
   },
   // Le chemin des fichiers qui contiennent les annotations Swagger
-  apis: ['./src/routes/*.js'], // Modifiez le chemin en fonction de la structure de votre projet
+  apis: ['./app/src/routes/*.ts'],
 };
 
 const specs = swaggerJsdoc(options);
 
-const swaggerDocs = (app) => {
+const swaggerDocs = (app: Application) => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 };
 
-module.exports = swaggerDocs;
+export default swaggerDocs;

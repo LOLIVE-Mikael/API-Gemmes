@@ -1,5 +1,7 @@
-const { Op } = require('sequelize');
-const { Gem } = require('../db/sequelize');
+import { Application, Request, Response } from 'express';
+import { Op } from 'sequelize';
+import { Gem } from '../db/sequelize';
+
 
 /**
  * @swagger
@@ -92,9 +94,15 @@ const { Gem } = require('../db/sequelize');
  *                   additionalProperties: true
  */
 
+// Définir les types pour les paramètres de requête
+interface FindAllGemsQuery {
+  color?: string;
+  rarity?: string;
+  limit?: string;
+}
 
-module.exports = (app) => {
-  app.get('/api/gemmes', async (req, res) => {
+export default (app: Application) => {
+  app.get('/api/gemmes', async (req: Request<{}, {}, {}, FindAllGemsQuery>, res: Response) => {
     try {
       const { color, rarity, limit } = req.query;
 
@@ -106,16 +114,16 @@ module.exports = (app) => {
         return res.status(400).json({ message: 'Le terme de recherche de rareté doit contenir au minimum 2 caractères.' });
       }
 
-      let parsedLimit = parseInt(limit, 10);
+      let parsedLimit = parseInt(limit ?? '', 10);
       if (limit && (isNaN(parsedLimit) || parsedLimit <= 0)) {
         return res.status(400).json({ message: 'Le paramètre limit doit être un nombre entier positif.' });
       }
 
-      const options = {
+      const options: any = {
         order: [['name', 'ASC']],
       };
 
-      const whereConditions = {};
+      const whereConditions: any = {};
 
       if (color) {
         whereConditions.color = {

@@ -1,4 +1,6 @@
-const gems = [
+import { GemAttributes } from '../models/gem';
+
+const gems: GemAttributes[] = [
   { id: 1, name: 'Améthyste', color: 'Violet', rarity: 'Commun' },
   { id: 2, name: 'Aigue-marine', color: 'Bleu clair', rarity: 'Rare' },
   { id: 3, name: 'Azurite', color: 'Bleu', rarity: 'Peu commun' },
@@ -87,4 +89,4 @@ const gems = [
   { id: 73, name: 'Oxyde de Zinc', color: 'Blanc', rarity: 'Peu commun' },
 ];
 
-module.exports = gems;
+export default gems;

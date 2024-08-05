@@ -1,5 +1,6 @@
-const { Gem } = require('../db/sequelize')
-const { ValidationError, UniqueConstraintError } = require('sequelize')
+import { Express, Request, Response } from 'express';
+import { Gem } from '../db/sequelize';
+import { ValidationError, UniqueConstraintError } from 'sequelize';
 
 /**
  * @swagger
@@ -98,24 +99,32 @@ const { ValidationError, UniqueConstraintError } = require('sequelize')
  */
 
 
-module.exports = (app) => {
-  app.put('/api/gemmes/:id', (req, res) => {
+const updateGem = (app: Express) => {
+  app.put('/api/gemmes/:id', async (req: Request, res: Response) => {
     const id = req.params.id
-    Gem.update(req.body, {
-      where: { id: id }
-    })
-    .then(_ => {
-      return Gem.findByPk(id).then(gem => {
-        const message = `La gemme ${gem.name} a bien été modifiéz.`
-        res.json({message, data: gem })
+
+    try {
+      await Gem.update(req.body, {
+        where: { id: id }
       })
-    })
-    .catch(error => {
-      if(error instanceof ValidationError) {
+
+      const gem = await Gem.findByPk(id);
+
+      if (gem) {
+        const message = `La gemme ${gem.name} a bien été modifiée.`;
+        return res.json({ message, data: gem });
+      } else {
+        const message = `La gemme avec l'ID ${id} n'existe pas.`;
+        return res.status(404).json({ message });
+      }
+    } catch(error) {
+      if(error instanceof ValidationError || error instanceof UniqueConstraintError) {
         return res.status(400).json({ message: error.message, data: error });
       }
-        const message = `La gemme n'a pas pu être modifiée. Réessayez dans quelques instants.`
-        res.status(500).json({ message, data: error })
-      })
-  })
-}
+      const message = `La gemme n'a pas pu être modifiée. Réessayez dans quelques instants.`
+      res.status(500).json({ message, data: error })
+      }
+  });
+};
+
+export default updateGem;

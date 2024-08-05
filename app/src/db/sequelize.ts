@@ -1,7 +1,7 @@
 /* L’API Rest et la Base de données : Créer un modèle Sequelize */
-const { Sequelize, DataTypes } = require('sequelize')
-const GemModel = require('../models/gem')
-const gems = require('./mock-gem')
+import { Sequelize } from 'sequelize';
+import GemModel from '../models/gem'; 
+import gems from './mock-gem'; // Importation des données mockées
   
 const sequelize = new Sequelize('gem_db', 'user', 'password', {
   host: 'db',
@@ -10,7 +10,7 @@ const sequelize = new Sequelize('gem_db', 'user', 'password', {
   logging: false
 })
   
-const Gem = GemModel(sequelize, DataTypes)
+const Gem = GemModel(sequelize)
   
 const initDb = async () => {
   try {
@@ -38,4 +38,4 @@ const initDb = async () => {
   }
 };
 
-module.exports = { initDb, Gem };
+export { initDb, Gem};
